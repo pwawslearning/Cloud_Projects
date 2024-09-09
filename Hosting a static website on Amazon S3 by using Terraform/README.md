@@ -44,7 +44,7 @@ resource "aws_s3_bucket_website_configuration" "redirect-page" {
 }
 ```
 
-## Validation
+## Verification
 **home page**
 <bucket_name>.s3-website-<region>.amazonaws.com
 
