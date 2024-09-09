@@ -21,6 +21,7 @@ Goal of this project is to deploy a sample website on Amazon S3 by using a featu
 7. Create IAM policy to allow Bucket objects from the public.
 
 ## Enable Static website hosting by using Terraform
+```
 resource "aws_s3_bucket_website_configuration" "redirect-page" {
   bucket = aws_s3_bucket.s3_bucket.id
 
@@ -41,6 +42,7 @@ resource "aws_s3_bucket_website_configuration" "redirect-page" {
     }
   }
 }
+```
 
 ## Validation
 **home page**
