@@ -1,20 +1,20 @@
-resource "aws_s3_bucket" "pw-programmatic" {
+resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.bucket_name
 
   tags = {
     Name = var.bucket_name
   }
 }
-resource "aws_s3_bucket_ownership_controls" "pw-programmatic" {
-  bucket = aws_s3_bucket.pw-programmatic.id
+resource "aws_s3_bucket_ownership_controls" "object_ownership" {
+  bucket = aws_s3_bucket.s3_bucket.id
 
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "pw-programmatic" {
-  bucket = aws_s3_bucket.pw-programmatic.id
+resource "aws_s3_bucket_public_access_block" "bucket_access" {
+  bucket = aws_s3_bucket.s3_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -22,29 +22,29 @@ resource "aws_s3_bucket_public_access_block" "pw-programmatic" {
   restrict_public_buckets = false
 }
 
-resource "aws_s3_bucket_versioning" "versioning_pw-programmatic" {
-  bucket = aws_s3_bucket.pw-programmatic.id
+resource "aws_s3_bucket_versioning" "versioning" {
+  bucket = aws_s3_bucket.s3_bucket.id
   versioning_configuration {
     status = var.status
   }
 }
 
 resource "aws_s3_object" "home-page" {
-  bucket       = aws_s3_bucket.pw-programmatic.bucket
+  bucket       = aws_s3_bucket.s3_bucket.bucket
   key          = "index.html"
   source       = var.source_homepage
   content_type = "text/html"
 }
 
 resource "aws_s3_object" "error-page" {
-  bucket       = aws_s3_bucket.pw-programmatic.bucket
+  bucket       = aws_s3_bucket.s3_bucket.bucket
   key          = "error.html"
   source       = var.source_errorpage
   content_type = "text/html"
 }
 
 resource "aws_s3_bucket_website_configuration" "redirect-page" {
-  bucket = aws_s3_bucket.pw-programmatic.id
+  bucket = aws_s3_bucket.s3_bucket.id
 
   index_document {
     suffix = "index.html"
@@ -65,7 +65,7 @@ resource "aws_s3_bucket_website_configuration" "redirect-page" {
 }
 
 resource "aws_s3_bucket_policy" "allow_access_from_public" {
-  bucket = aws_s3_bucket.pw-programmatic.id
+  bucket = aws_s3_bucket.s3_bucket.id
   policy = data.aws_iam_policy_document.allow_access_from_public.json
 }
 
@@ -81,7 +81,7 @@ data "aws_iam_policy_document" "allow_access_from_public" {
     ]
 
     resources = [
-      "${aws_s3_bucket.pw-programmatic.arn}/*",
+      "${aws_s3_bucket.s3_bucket.arn}/*",
     ]
   }
 }
