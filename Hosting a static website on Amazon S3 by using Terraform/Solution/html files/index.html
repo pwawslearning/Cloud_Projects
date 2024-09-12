@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Home Page</title>
-</head>
 <body>
 
-<h1>Welcome to My webpage</h1>
-<p>Hello!</p>
-<p>Thank you for visiting to my website</p>
-
+<h1 style="text-align:center;">Hosting a static website on Amazon S3 by using terraform</h1>
+<img src="../../html files/index.html" width="500" height="400">
+<h2> Goal</h2>
+<p>Goal of this project is to deploy a sample website on Amazon S3 by using a feature which static website hosting in AWS cloud and apply Bucket policy to allow access to the bucket from public.</p>
+<h2>Pre-Requisites</h2>
+<ol type="1">
+  <li>AWS IAM user access key & secret key accessing S3.</li>
+  <li>Install Terraform IaC in your machine</li>
+</ol>  
+<h2>Deployment the resources by using Terraform code</h2>
+<ol type="1">
+  <li>Create S3 bucket in your desired region.</li>
+  <li>Enable static website hosting feature in S3</li>
+  <li>Apply the redirect policy</li>
+  <li>Update Bucket ACL to public access.</li>
+  <li>Upload the objects to bucket.</li>
+  <li>Create IAM policy to allow Bucket objects from the public.</li>
+</ol> 
+<h2>Verification</h2>
+ <ul>
+  <li>home page bucket_name.s3-website-.amazonaws.com</li>
+  <li>error page bucket_name.s3-website-.amazonaws.com/error/</li>
+</ul> 
 </body>
 </html>
