@@ -34,4 +34,4 @@ This project task aims to leverage infrastructure as code (IaC) best practices t
 ## Clear resources
 Destroy the resources once the testing is over to save the billing by using below terraform command.
 
-```terraform destroy
+'terraform destroy'
