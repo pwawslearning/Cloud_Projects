@@ -27,11 +27,11 @@ This project task aims to leverage infrastructure as code (IaC) best practices t
    3. Create S3 endpoint and attach to the private route tables.
 
 ## Run below terraform commands to deployment resources
-'terraform init' (initialize to provider)
-'terraform fmt' (check format)
-'terraform validate' (validate codes)
-'terraform plan' (pre-check the results before deploy)
-'terraform apply' (deploy the resources)
+ 1. 'terraform init' (initialize to provider)
+ 2. 'terraform fmt' (check format)
+ 3. 'terraform validate' (validate codes)
+ 4. 'terraform plan' (pre-check the results before deploy)
+ 5. 'terraform apply' (deploy the resources)
 
 ## Validation 
 
