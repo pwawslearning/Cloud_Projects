@@ -26,6 +26,13 @@ This project task aims to leverage infrastructure as code (IaC) best practices t
    2. Create Auto-scaling group and Application Loadbalancer
    3. Create S3 endpoint and attach to the private route tables.
 
+## Run below terraform commands to deployment resources
+'terraform init' (initialize to provider)
+'terraform fmt' (check format)
+'terraform validate' (validate codes)
+'terraform plan' (pre-check the results before deploy)
+'terraform apply' (deploy the resources)
+
 ## Validation 
 
   1. Login to AWS Console and verify all the resources are deployed
