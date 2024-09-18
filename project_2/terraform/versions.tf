@@ -11,6 +11,8 @@ provider "aws" {
   # Configuration options
   profile = var.profile
 }
+
+
 # To store statefile in s3
 terraform {
   backend "s3" {
