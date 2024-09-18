@@ -11,3 +11,11 @@ provider "aws" {
   # Configuration options
   profile = var.profile
 }
+# To store statefile in s3
+terraform {
+  backend "s3" {
+    bucket = "apache-websvr-bk"
+    key    = "terraform.tfstate"
+    region = "ap-southeast-1"
+  }
+}
