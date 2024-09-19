@@ -37,7 +37,7 @@ This project task aims to leverage infrastructure as code (IaC) best practices t
 
   1. Login to AWS Console and verify all the resources are deployed
   2. Access the web application from public internet browser using the domain name.
-     ![Apache_result](https://github.com/user-attachments/assets/a1b0f38b-11bb-4b7b-97f6-e7086b776a5d)
+     ![Apache_result](https://github.com/user-attachments/assets/493f133b-1527-4f50-bc16-4f481ec8ac86)
 
 
 ## Clear resources
