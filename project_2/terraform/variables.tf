@@ -69,9 +69,15 @@ variable "status" {
 variable "source_path" {
 
 }
+variable "image_path" {
+  
+}
 variable "role_name" {
 
 }
-variable "policy_arn" {
-  
+variable "policy_arn1" {
+
+}
+variable "policy_arn2" {
+
 }
