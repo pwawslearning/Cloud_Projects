@@ -185,12 +185,21 @@ resource "aws_security_group" "web_svr_sg" {
   name        = "web_svr_sg"
   description = "Allows http from AlB"
   vpc_id      = aws_vpc.vpc.id
-
+  
+  ingress {
+    description = "Allow SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] # You can limit this to specific IP ranges if needed
+  }
+  
   ingress {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
+  
   }
 
   egress {
@@ -234,6 +243,11 @@ resource "aws_s3_object" "object" {
   key    = "index.html"
   source = var.source_path
 }
+resource "aws_s3_object" "object_image" {
+  bucket = aws_s3_bucket.s3_bucket.bucket
+  key    = "Apache.png"
+  source = var.image_path
+}
 
 # Creating s3-role
 resource "aws_iam_role" "s3role" {
@@ -255,7 +269,12 @@ resource "aws_iam_role" "s3role" {
 # attach policy to role
 resource "aws_iam_role_policy_attachment" "s3role_policy_attachment" {
   role       = aws_iam_role.s3role.name
-  policy_arn = var.policy_arn
+  policy_arn = var.policy_arn1
+}
+# attach policy to role
+resource "aws_iam_role_policy_attachment" "s3role_policy2_attachment" {
+  role       = aws_iam_role.s3role.name
+  policy_arn = var.policy_arn2
 }
 
 #Create instance profile
