@@ -1,4 +1,7 @@
-# Project Name
+# Deploy HAproxy for multiple docker containers by using Terraform
+
+![haproxy](https://github.com/user-attachments/assets/6e5e33bc-feb2-4bba-9936-1bf67c760533)
+
 
 ## 📋 Table of Contents
 1. [Overview](#overview)
