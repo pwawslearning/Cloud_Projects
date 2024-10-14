@@ -48,7 +48,7 @@ Ensure the following tools are installed on your machine:
 ### Installation
 1. **Clone the repository**:
     ```bash
-    git clone git@github.com:pwawslearning/Cloud_Projects.git
+    git clone https://github.com/pwawslearning/Cloud_Projects.git
     cd project_3
     ```
 
