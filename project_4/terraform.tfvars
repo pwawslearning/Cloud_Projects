@@ -1,0 +1,5 @@
+profile      = "pw-programmatic"
+project_name = "myan23"
+az_a         = "ap-southeast-1a"
+az_b         = "ap-southeast-1b"
+ami_id       = "ami-03fa85deedfcac80b"
