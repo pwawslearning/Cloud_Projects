@@ -55,6 +55,7 @@ Ensure the following tools are installed on your machine:
 2. **Install dependencies**:
     ```bash
     # generate key and certificates for HAproxy
+    $ mkdir haproxy
     $ cd haproxy
     $ openssl req -new -x509 -days 365 -nodes -newkey rsa:2048 -keyout haproxy.key -out haproxy.crt -subj "/CN=localhost1"
     $ cat haproxy.crt | openssl x509 --noout --text 
