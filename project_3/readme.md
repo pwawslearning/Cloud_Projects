@@ -45,7 +45,7 @@ Ensure the following tools are installed on your machine:
 ## 🛠 Getting Started <a name="getting-started"></a>
 
 
-### Installation
+### Implementation
 1. **Clone the repository**:
     ```bash
     git clone https://github.com/pwawslearning/Cloud_Projects.git
