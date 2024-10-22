@@ -118,7 +118,7 @@ Ensure the following tools are installed on your machine:
     terraform destroy
     ```
 
-### Reference
+### Reference below my notion node
 
 https://pw-projects.notion.site/Assignment-3-4-5-Deploy-HAproxy-for-multiple-docker-containers-by-using-Terraform-11bcafef53ea80f482dcd3067db64387?pvs=4
 
