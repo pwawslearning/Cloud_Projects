@@ -55,16 +55,16 @@ resource "aws_internet_gateway" "igw" {
 # Create route table
 resource "aws_route_table" "public_rtb" {
   vpc_id = aws_vpc.znt_vpc.id
+  route = {
+    destination_cidr_block = "0.0.0.0/0"
+    gateway_id             = aws_internet_gateway.igw.id
+  }
 
   tags = {
     Name = "public_rtb"
   }
 }
-resource "aws_route" "public_route" {
-  route_table_id         = aws_route_table.public_rtb.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.igw.id
-}
+
 resource "aws_route_table_association" "pub_sub1a_to_pub_rtb" {
   subnet_id      = aws_subnet.public_subnet1a.id
   route_table_id = aws_route_table.public_rtb.id
@@ -127,7 +127,7 @@ resource "aws_security_group" "db-sg" {
 # create key pair
 resource "aws_key_pair" "keypair" {
   key_name   = "myan23-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCXVs439ix8FA66ra6JcaUOUYVs2AitIsX6j/4Qvoh7Ij9ysOUXW5tpSXkDpK7t6s2QQXHs/raodVJ55LA12DewkisJ5Czc76rvldYS9rerAIW2bfhNGDQ5SxYUYmeak/UL8w8BWqvAsJrmufJ6TS2SDh2UxaKJJQJ3fJYXfpnWPPF4r7+wSwMg8pB4zSs+DXMYo15s820WlwcO5q9c2CMqhpggb/rJLA3+736zRY3tHyj4Qd8OQu9Y5dwecqs9hizKyRb6Ic4xe1S7IY7195KTqumLGoR/zZB+xtCy7M6loLtnCnV3ULXO1B/ey0F9vX3TTwMzHJ5Cw/LPjrQUUebgC0s1E1XhSPgjpHealZP5C8Xd3ecRI7PW60L6dLMCNJEUFG3R/crhJQAsAwzD/4sVCmtifAXJCecYoacLEEFfp83ktAcnJdh7pU8RFtDDOHSoSpIhheQr4i5NQP1hd3+yUUWu/t0ggPd1fUdAdiwRLdtHVNYqfNlZ9eES+6Wi2yk= phyowai@phyowai-Ubuntu"
+  public_key = var.public_key
 }
 
 # #Create S3 bucket and upload file
@@ -167,9 +167,14 @@ resource "aws_iam_role" "s3_role" {
     ]
   })
 }
+
+data "aws_iam_policy" "s3_full_access" {
+  arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
 resource "aws_iam_role_policy_attachment" "policy-attach" {
   role       = aws_iam_role.s3_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+  policy_arn = data.aws_iam_policy.s3_full_access.arn
 }
 
 resource "aws_vpc_endpoint" "s3_endpoint" {
@@ -179,8 +184,23 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
   route_table_ids   = [aws_route_table.public_rtb.id]
 }
 
+data "aws_ami" "instance_ami" {
+  filter {
+    name = "image_id"
+    values = ["ami-03fa85deedfcac80b"]
+  }
+  filter {
+    name = "platform"
+    values = ["ubuntu"]
+  }
+  filter {
+    name = "root_device_type"
+    values = ["ebs"]
+  }
+}
+
 resource "aws_instance" "web_svr" {
-  ami                         = var.ami_id
+  ami                         = data.aws_ami.instance_ami
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.keypair.key_name
   subnet_id                   = aws_subnet.public_subnet1a.id
@@ -191,22 +211,22 @@ resource "aws_instance" "web_svr" {
   tags = {
     Name = "${var.project_name}"
   }
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("${path.module}/../.ssh/myan23_rsa")
-    host        = self.public_ip
-  }
+  # connection {
+  #   type        = "ssh"
+  #   user        = "ubuntu"
+  #   private_key = file("${path.module}/../.ssh/myan23_rsa")
+  #   host        = self.public_ip
+  # }
 
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt update",
-      "curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip",
-      "sudo apt install -y unzip",
-      "unzip awscliv2.zip",
-      "sudo ./aws/install"
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo apt update",
+  #     "curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip",
+  #     "sudo apt install -y unzip",
+  #     "unzip awscliv2.zip",
+  #     "sudo ./aws/install"
+  #   ]
+  # }
 }
 resource "aws_iam_instance_profile" "myan23_profile" {
   name = "${var.project_name}-profile"
@@ -224,32 +244,28 @@ resource "aws_db_subnet_group" "db-subnetgroup" {
   }
 }
 # Create the RDS cluster
+data "aws_rds_engine_version" "rds_engine_version" {
+  engine             = "mysql"
+  preferred_versions = ["8.0.39"]
+}
+
 resource "aws_rds_cluster" "cluster" {
   cluster_identifier      = "my-rds-cluster"
-  engine                  = "aurora-postgresql"
-  engine_version          = "13.7"  # Specify your PostgreSQL version
-  master_username         = "admin"
-  master_password         = "your-master-password"
-  database_name           = "mydb"
+  engine                  = data.aws_rds_engine_version.rds_engine_version.engine
+  engine_version          = data.aws_rds_engine_version.rds_engine_version.preferred_versions
+  master_username         = var.db_username
+  master_password         = var.db_password
+  database_name           = var.db_name
   db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids  = [aws_security_group.rds_sg.id]
-  skip_final_snapshot     = true
-
-  # Backup settings
-  backup_retention_period = 7
-  preferred_backup_window = "07:00-09:00"
-
-  # Maintenance settings
-  preferred_maintenance_window = "sun:04:00-sun:06:00"
+  vpc_security_group_ids  = [aws_security_group.db-sg.id]
 }
 
 # Create RDS Cluster Instances
-resource "aws_rds_cluster_instance" "example_instance_1" {
-  identifier        = "my-rds-cluster-instance-1"
-  cluster_identifier = aws_rds_cluster.example.id
-  instance_class     = "db.r5.large"
-  engine             = aws_rds_cluster.example.engine
-
-  # Associate instance with a subnet in AZ 'us-east-1a'
-  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+resource "aws_rds_cluster_instance" "cluster_instances" {
+  count              = 2
+  identifier         = "db_instance-${count.index}"
+  cluster_identifier = aws_rds_cluster.cluster.id
+  instance_class     = "db.t3.micro"
+  engine             = data.aws_rds_engine_version.rds_engine_version.engine
+  engine_version     = data.aws_rds_engine_version.rds_engine_version.preferred_versions
 }
