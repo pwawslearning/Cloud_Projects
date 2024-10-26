@@ -1,6 +1,7 @@
 # Deploy Apache webserver on AWS by using Terraform
 
-![Apache](https://github.com/user-attachments/assets/0801fced-690a-406c-bcbf-fff9ddd8c355)
+![Screenshot from 2024-10-27 00-57-52](https://github.com/user-attachments/assets/d9ff2cfb-1e85-4c9d-a51f-745f0643e83c)
+
 
 ## Objective
 This project task aims to leverage infrastructure as code (IaC) best practices to create a reusable and shareable infrastructure setup. Goal of this project to write Terraform IaC to deploy Apache Webserver in AWS cloud.
