@@ -55,8 +55,8 @@ resource "aws_internet_gateway" "igw" {
 # Create route table
 resource "aws_route_table" "public_rtb" {
   vpc_id = aws_vpc.znt_vpc.id
-  route = {
-    destination_cidr_block = "0.0.0.0/0"
+  route {
+    cidr_block = "0.0.0.0/0"
     gateway_id             = aws_internet_gateway.igw.id
   }
 
@@ -130,26 +130,22 @@ resource "aws_key_pair" "keypair" {
   public_key = var.public_key
 }
 
-# #Create S3 bucket and upload file
-# resource "aws_s3_bucket" "myan23_bucket" {
-#   bucket = "myan23-bucket01"
+#Create S3 bucket and upload file
+resource "aws_s3_bucket" "project_bucket" {
+  bucket = var.project_name
 
-#   tags = {
-#     Name        = "myan23-bucket01"
-#   }
-# }
-# resource "aws_s3_bucket_ownership_controls" "object_ownership" {
-#   bucket = aws_s3_bucket.myan23_bucket.id
+  tags = {
+    Name        = "${var.project_name}-bucket01"
+  }
+}
+resource "aws_s3_bucket_ownership_controls" "object_ownership" {
+  bucket = aws_s3_bucket.project_bucket.id
 
-#   rule {
-#     object_ownership = "BucketOwnerPreferred"
-#   }
-# }
-# resource "aws_s3_object" "object" {
-#   bucket = aws_s3_bucket.myan23_bucket.bucket
-#   key    = "myan23"
-#   source = "${path.module}"
-# }
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 
 resource "aws_iam_role" "s3_role" {
   name = "s3access_role"
@@ -184,23 +180,8 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
   route_table_ids   = [aws_route_table.public_rtb.id]
 }
 
-data "aws_ami" "instance_ami" {
-  filter {
-    name = "image_id"
-    values = ["ami-03fa85deedfcac80b"]
-  }
-  filter {
-    name = "platform"
-    values = ["ubuntu"]
-  }
-  filter {
-    name = "root_device_type"
-    values = ["ebs"]
-  }
-}
-
 resource "aws_instance" "web_svr" {
-  ami                         = data.aws_ami.instance_ami
+  ami                         = var.instance_image
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.keypair.key_name
   subnet_id                   = aws_subnet.public_subnet1a.id
@@ -211,22 +192,7 @@ resource "aws_instance" "web_svr" {
   tags = {
     Name = "${var.project_name}"
   }
-  # connection {
-  #   type        = "ssh"
-  #   user        = "ubuntu"
-  #   private_key = file("${path.module}/../.ssh/myan23_rsa")
-  #   host        = self.public_ip
-  # }
-
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo apt update",
-  #     "curl -o awscliv2.zip https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip",
-  #     "sudo apt install -y unzip",
-  #     "unzip awscliv2.zip",
-  #     "sudo ./aws/install"
-  #   ]
-  # }
+  user_data = filebase64("${path.module}/user_data.sh")
 }
 resource "aws_iam_instance_profile" "myan23_profile" {
   name = "${var.project_name}-profile"
@@ -235,7 +201,7 @@ resource "aws_iam_instance_profile" "myan23_profile" {
 
 #Creating database
 
-resource "aws_db_subnet_group" "db-subnetgroup" {
+resource "aws_db_subnet_group" "subnet_group" {
   name       = "db-subnetgroup"
   subnet_ids = [aws_subnet.private_subnet1a.id, aws_subnet.private_subnet1b.id]
 
@@ -243,29 +209,23 @@ resource "aws_db_subnet_group" "db-subnetgroup" {
     Name = "My DB subnet group"
   }
 }
-# Create the RDS cluster
-data "aws_rds_engine_version" "rds_engine_version" {
-  engine             = "mysql"
-  preferred_versions = ["8.0.39"]
-}
 
-resource "aws_rds_cluster" "cluster" {
-  cluster_identifier      = "my-rds-cluster"
-  engine                  = data.aws_rds_engine_version.rds_engine_version.engine
-  engine_version          = data.aws_rds_engine_version.rds_engine_version.preferred_versions
-  master_username         = var.db_username
-  master_password         = var.db_password
-  database_name           = var.db_name
-  db_subnet_group_name    = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids  = [aws_security_group.db-sg.id]
-}
+# create rds instances
+resource "aws_db_instance" "db-instance" {
+  identifier = "mydb-instance"
+  allocated_storage    = 10
+  db_name              = "mydb"
+  engine               = "mysql"
+  engine_version       = "8.0.39"
+  instance_class       = "db.t3.micro"
+  username             = var.db_username
+  password             = var.db_password
+  storage_type = "gp2"
+  db_subnet_group_name = aws_db_subnet_group.subnet_group.name
+  vpc_security_group_ids = [aws_security_group.db-sg.id]
+  multi_az = "true" # for multi-DB instance
+  publicly_accessible = "false"
+  final_snapshot_identifier = "false"
 
-# Create RDS Cluster Instances
-resource "aws_rds_cluster_instance" "cluster_instances" {
-  count              = 2
-  identifier         = "db_instance-${count.index}"
-  cluster_identifier = aws_rds_cluster.cluster.id
-  instance_class     = "db.t3.micro"
-  engine             = data.aws_rds_engine_version.rds_engine_version.engine
-  engine_version     = data.aws_rds_engine_version.rds_engine_version.preferred_versions
+  tags = {"Name"= "mydb-instance"}
 }
