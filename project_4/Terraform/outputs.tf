@@ -7,6 +7,9 @@ output "instance_ip" {
 output "instance_dns" {
   value = aws_instance.web_svr.public_dns
 }
-output "db_endpoint" {
+output "master_db" {
   value = aws_db_instance.db-instance.endpoint
+}
+output "read_replica" {
+  value = aws_db_instance.read-replica.endpoint
 }

@@ -214,7 +214,7 @@ resource "aws_db_subnet_group" "subnet_group" {
 resource "aws_db_instance" "db-instance" {
   identifier                = "mydb-instance"
   allocated_storage         = 10
-  db_name                   = "mydb"
+  db_name                   = var.db_name
   engine                    = "mysql"
   engine_version            = "8.0.39"
   instance_class            = "db.t3.micro"
@@ -223,9 +223,25 @@ resource "aws_db_instance" "db-instance" {
   storage_type              = "gp2"
   db_subnet_group_name      = aws_db_subnet_group.subnet_group.name
   vpc_security_group_ids    = [aws_security_group.db-sg.id]
-  multi_az                  = "true" # for multi-DB instance
-  publicly_accessible       = "false"
-  final_snapshot_identifier = "false"
+  multi_az                  = true # for multi-DB instance
+  publicly_accessible       = false
+  final_snapshot_identifier = false
+  backup_retention_period = 2
 
   tags = { "Name" = "mydb-instance" }
+}
+
+resource "aws_db_instance" "read-replica" {
+  replicate_source_db = aws_db_instance.db-instance.identifier
+  identifier                = "read-replica"
+  allocated_storage         = 10
+  instance_class            = "db.t3.micro"
+  storage_type              = "gp2"
+  vpc_security_group_ids    = [aws_security_group.db-sg.id]
+  multi_az                  = false
+  publicly_accessible       = false
+  skip_final_snapshot = true
+  auto_minor_version_upgrade = true
+
+  tags = { "Name" = "read-replica" }
 }
