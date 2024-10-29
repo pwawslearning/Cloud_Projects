@@ -1,9 +1,9 @@
 <?php
 // Database connection details
-$servername = "webapp-db.xxxxxxxxxx.us-east-1.rds.amazonaws.com";
+$servername = "db-instance.xxxxxxxxxx.ap-southeast-1.rds.amazonaws.com";
 $username = "admin";
-$password = "password123";
-$dbname = "webappdb";
+$password = "admin123";
+$dbname = "mydb";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
