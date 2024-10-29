@@ -45,11 +45,11 @@ Before getting started, ensure you have the following:
 
 ## 🚀 Tech Stack <a name="tech-stack"></a>
 
-- **Backend**: nginx
-- **Frontend**: Kubernetes api-resources(service, deployment and pods)
-- **Security**: Kubernetes secret
-- **tools**: Gitlab runner, kubectl
-- **DevOps**: Docker, Gitlab CICD, Kubernetes
+- **Backend**: php, MySQL(database)
+- **Frontend**: Apache webserver
+- **Security**: Security group for all layers
+- **tools**: aws cli, terraform
+- **DevOps**: Terraform, php, html
 
 ---
 
