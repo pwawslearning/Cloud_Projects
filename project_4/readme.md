@@ -28,18 +28,20 @@ Before getting started, ensure you have the following:
 
 ## ✨ Project Structure <a name="project-structure"></a>
 ```plaintext
-.
-├── dockerfile
-├── .git
-├── .gitlab-ci.yml
-├── k8s
-│   ├── deployment.yaml
-│   ├── secret.yaml
-│   └── service.yaml
-├── nginx
-│   └── index.html
-├── nginx.conf
-└── README.md
+
+├── Terraform
+│   ├── infra.tf
+│   ├── outputs.tf
+│   ├── providers.tf
+│   ├── terraform.tfvars
+│   ├── user_data.sh
+│   └── variables.tf
+└── web_app code
+    ├── fetch.php
+    ├── index.php
+    ├── insert.php
+    ├── merlin.jpg
+    └── mysql
 ```
 ---
 
