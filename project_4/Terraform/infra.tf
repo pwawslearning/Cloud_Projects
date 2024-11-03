@@ -9,7 +9,7 @@ resource "aws_subnet" "public_subnet1a" {
   vpc_id            = aws_vpc.znt_vpc.id
   cidr_block        = "10.0.0.0/24"
   availability_zone = var.az_a
-
+  map_public_ip_on_launch = true
   tags = {
     Name = "pub_subnet1a"
   }
@@ -18,7 +18,7 @@ resource "aws_subnet" "public_subnet1b" {
   vpc_id            = aws_vpc.znt_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = var.az_b
-
+  map_public_ip_on_launch = true
   tags = {
     Name = "pub_subnet1b"
   }
@@ -74,6 +74,28 @@ resource "aws_route_table_association" "pub_sub1b_to_pub_rtb" {
   route_table_id = aws_route_table.public_rtb.id
 }
 #security group
+resource "aws_security_group" "alb_sg" {
+  name        = "alb_sg"
+  description = "Allows web access HTTP from public"
+  vpc_id      = aws_vpc.znt_vpc.id
+
+  ingress {
+    description = "Allows Website acccess"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+
 resource "aws_security_group" "public_sg" {
   name        = "public_sg"
   description = "Allow HTTP, SSH inbound traffic and all outbound traffic"
@@ -87,10 +109,10 @@ resource "aws_security_group" "public_sg" {
   }
 
   ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
 
@@ -125,26 +147,11 @@ resource "aws_security_group" "db-sg" {
 }
 
 # create key pair
+
 resource "aws_key_pair" "keypair" {
   key_name   = "myan23-key"
   public_key = var.public_key
 }
-
-#Create S3 bucket and upload file
-# resource "aws_s3_bucket" "project_bucket" {
-#   bucket = var.project_name
-
-#   tags = {
-#     Name        = "${var.project_name}-bucket01"
-#   }
-# }
-# resource "aws_s3_bucket_ownership_controls" "object_ownership" {
-#   bucket = aws_s3_bucket.project_bucket.id
-
-#   rule {
-#     object_ownership = "BucketOwnerPreferred"
-#   }
-# }
 
 
 resource "aws_iam_role" "s3_role" {
@@ -180,23 +187,87 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
   route_table_ids   = [aws_route_table.public_rtb.id]
 }
 
-resource "aws_instance" "web_svr" {
-  ami                         = var.instance_image
-  instance_type               = "t2.micro"
-  key_name                    = aws_key_pair.keypair.key_name
-  subnet_id                   = aws_subnet.public_subnet1a.id
-  associate_public_ip_address = true
-  security_groups             = [aws_security_group.public_sg.id]
-  iam_instance_profile        = aws_iam_instance_profile.myan23_profile.name
+# resource "aws_instance" "web_svr" {
+#   ami                         = var.instance_image
+#   instance_type               = "t2.micro"
+#   key_name                    = aws_key_pair.keypair.key_name
+#   subnet_id                   = aws_subnet.public_subnet1a.id
+#   associate_public_ip_address = true
+#   security_groups             = [aws_security_group.public_sg.id]
+#   iam_instance_profile        = aws_iam_instance_profile.myan23_profile.name
 
+#   tags = {
+#     Name = "${var.project_name}"
+#   }
+#   user_data = filebase64("${path.module}/user_data.sh")
+# }
+
+resource "aws_launch_template" "web_template" {
+  description            = "EC2 template for ASG"
+  image_id               = var.instance_image
+  instance_type          = "t2.micro"
+  key_name               = aws_key_pair.keypair.key_name
+  user_data = filebase64("${path.module}/user_data.sh")
+  vpc_security_group_ids = [aws_security_group.public_sg.id]
   tags = {
     Name = "${var.project_name}"
   }
-  user_data = filebase64("${path.module}/user_data.sh")
+  iam_instance_profile {
+    name = aws_iam_instance_profile.myan23_profile.name
+  }
+  network_interfaces {
+    associate_public_ip_address = true
+  }
+  monitoring {
+    enabled = true
+  }
 }
+
 resource "aws_iam_instance_profile" "myan23_profile" {
   name = "${var.project_name}-profile"
   role = aws_iam_role.s3_role.name
+}
+
+resource "aws_lb" "web_alb" {
+  name               = "${var.project_name}-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb_sg.id]
+  subnets            = [aws_subnet.public_subnet1a.id, aws_subnet.public_subnet1b.id]
+
+}
+
+resource "aws_lb_target_group" "alb_tg" {
+  name        = "${var.project_name}-TG"
+  port        = 80
+  protocol    = "HTTP"
+  target_type = "instance"
+  vpc_id      = aws_vpc.znt_vpc.id
+  tags = {
+    Name = "${var.project_name}-TG"
+  }
+}
+
+resource "aws_lb_listener" "alb-listener" {
+  load_balancer_arn = aws_lb.web_alb.arn
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.alb_tg.arn
+  }
+  port     = 80
+  protocol = "HTTP"
+}
+
+resource "aws_autoscaling_group" "asg" {
+  min_size           = var.min_size
+  max_size           = var.max_size
+  desired_capacity   = var.desired_capacity
+  name               = "${var.project_name}-ASG"
+  vpc_zone_identifier = [aws_subnet.public_subnet1a.id, aws_subnet.public_subnet1b.id]
+  target_group_arns  = [aws_lb_target_group.alb_tg.arn]
+  launch_template {
+    id = aws_launch_template.web_template.id
+  }
 }
 
 #Creating database
@@ -226,21 +297,21 @@ resource "aws_db_instance" "db-instance" {
   multi_az                  = true # for multi-DB instance
   publicly_accessible       = false
   final_snapshot_identifier = false
-  backup_retention_period = 2
+  backup_retention_period   = 2
 
   tags = { "Name" = "mydb-instance" }
 }
 
 resource "aws_db_instance" "read-replica" {
-  replicate_source_db = aws_db_instance.db-instance.identifier
-  identifier                = "read-replica"
-  allocated_storage         = 10
-  instance_class            = "db.t3.micro"
-  storage_type              = "gp2"
-  vpc_security_group_ids    = [aws_security_group.db-sg.id]
-  multi_az                  = false
-  publicly_accessible       = false
-  skip_final_snapshot = true
+  replicate_source_db        = aws_db_instance.db-instance.identifier
+  identifier                 = "read-replica"
+  allocated_storage          = 10
+  instance_class             = "db.t3.micro"
+  storage_type               = "gp2"
+  vpc_security_group_ids     = [aws_security_group.db-sg.id]
+  multi_az                   = false
+  publicly_accessible        = false
+  skip_final_snapshot        = true
   auto_minor_version_upgrade = true
 
   tags = { "Name" = "read-replica" }

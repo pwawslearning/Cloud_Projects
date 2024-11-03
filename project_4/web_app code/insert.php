@@ -1,16 +1,16 @@
 <?php
 // Database connection details
-$servername = "db-instance.xxxxxxxxxx.ap-southeast-1.rds.amazonaws.com";
-$username = "admin";
-$password = "admin123";
-$dbname = "mydb";
+$db1_servername = "mydb-instance.cfkuekeg8zet.ap-southeast-1.rds.amazonaws.com";
+$db1_username = "admin";
+$db1_password = "admin123";
+$db1_name = "mydb";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn1 = new mysqli($db1_servername, $db1_username, $db1_password, $db1_name);
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($conn1->connect_error) {
+    die("Connection failed: " . $conn1->connect_error);
 }
 
 // Get form data
@@ -19,12 +19,12 @@ $email = $_POST['email'];
 
 // Insert data into the database
 $sql = "INSERT INTO users (name, email) VALUES ('$name', '$email')";
-if ($conn->query($sql) === TRUE) {
+if ($conn1->query($sql) === TRUE) {
     echo "New record created successfully. <a href='index.php'>Go back</a>";
 } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    echo "Error: " . $sql . "<br>" . $conn1->error;
 }
 
 // Close connection
-$conn->close();
+$conn1->close();
 ?>

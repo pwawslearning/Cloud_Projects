@@ -26,3 +26,12 @@ variable "db_password" {
 }
 variable "db_name" {
 }
+variable "desired_capacity" {
+
+}
+variable "max_size" {
+
+}
+variable "min_size" {
+
+}

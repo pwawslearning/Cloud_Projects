@@ -1,21 +1,21 @@
 <?php
 // Database connection details
-$servername = "db-instance.xxxxxxxxxx.ap-southeast-1.rds.amazonaws.com";
-$username = "admin";
-$password = "admin123";
-$dbname = "mydb";
+$servername2 = "read-replica.cfkuekeg8zet.ap-southeast-1.rds.amazonaws.com";
+$username2 = "admin";
+$password2 = "admin123";
+$dbname2 = "mydb";
 
 // Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn2 = new mysqli($servername2, $username2, $password2, $dbname2);
 
 // Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if ($conn2->connect_error) {
+    die("Connection failed: " . $conn2->connect_error);
 }
 
 // Fetch all records from the users table
 $sql = "SELECT id, name, email FROM users";
-$result = $conn->query($sql);
+$result = $conn2->query($sql);
 
 if ($result->num_rows > 0) {
     echo "<h1>Submitted Data</h1>";
@@ -29,5 +29,5 @@ if ($result->num_rows > 0) {
 }
 
 // Close connection
-$conn->close();
+$conn2->close();
 ?>

@@ -16,7 +16,20 @@ systemctl status mysql
 
 #data transfer
 cd /var/www/html
-sudo aws s3 cp s3://t2-webapp/index.php .
-sudo aws s3 cp s3://t2-webapp/insert.php .
-sudo aws s3 cp s3://t2-webapp/fetch.php .
+sudo aws s3 cp s3://t2-webapp-bucket01/index.php .
+sudo aws s3 cp s3://t2-webapp-bucket01/insert.php .
+sudo aws s3 cp s3://t2-webapp-bucket01/fetch.php .
+sudo aws s3 cp s3://t2-webapp-bucket01/config.php .
+sudo aws s3 cp s3://t2-webapp-bucket01/merlin.jpg .
 sudo rm index.html
+
+#set environment variables
+echo 'export DB1_HOST=${aws_db_instance.db-instance.address}' >> /etc/environment
+echo 'export DB1_USER=${var.db_username}' >> /etc/environment
+echo 'export DB1_PASS=${var.db_password}' >> /etc/environment
+echo 'export DB1_NAME=${var.db_name}' >> /etc/environment
+echo 'export DB2_HOST=${aws_db_instance.read-replica.address}' >> /etc/environment
+echo 'export DB2_USER=${var.db_username}' >> /etc/environment
+echo 'export DB2_PASS=${var.db_password}' >> /etc/environment
+echo 'export DB2_NAME=${var.db_name}' >> /etc/environment
+source /etc/environment"

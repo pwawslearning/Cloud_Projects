@@ -15,7 +15,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to the Tier 2 Web Application</h1>
+    <h1 style="color:Gold;">Welcome to the Tier 2 Web Application</h1>
     <form action="insert.php" method="POST">
         <label for="name" style="color:MediumSeaGreen;">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
