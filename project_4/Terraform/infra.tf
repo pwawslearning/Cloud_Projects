@@ -153,7 +153,32 @@ resource "aws_key_pair" "keypair" {
   public_key = var.public_key
 }
 
+#Create s3 bucket
+resource "aws_s3_bucket" "s3_bucket" {
+  bucket = "${var.project_name}-bucket01"
 
+  tags = {
+    Name = "${var.project_name}-bucket-01"
+  }
+}
+resource "aws_s3_bucket_ownership_controls" "object_ownership" {
+  bucket = aws_s3_bucket.s3_bucket.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_public_access_block" "bucket_access" {
+  bucket = aws_s3_bucket.s3_bucket.id
+
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
+#Create s3 access role
 resource "aws_iam_role" "s3_role" {
   name = "s3access_role"
   assume_role_policy = jsonencode({
