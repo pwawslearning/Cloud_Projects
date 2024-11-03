@@ -11,7 +11,6 @@ This project aims to create a robust highly available web application infrastruc
 2. [Project Structure](#project-structure)
 3. [Tech Stack](#tech-stack)
 4. [Getting Started](#getting-started)
-5. [Reference](#reference)
 
 ---
 
