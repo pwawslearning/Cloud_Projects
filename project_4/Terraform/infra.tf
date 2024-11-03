@@ -187,21 +187,6 @@ resource "aws_vpc_endpoint" "s3_endpoint" {
   route_table_ids   = [aws_route_table.public_rtb.id]
 }
 
-# resource "aws_instance" "web_svr" {
-#   ami                         = var.instance_image
-#   instance_type               = "t2.micro"
-#   key_name                    = aws_key_pair.keypair.key_name
-#   subnet_id                   = aws_subnet.public_subnet1a.id
-#   associate_public_ip_address = true
-#   security_groups             = [aws_security_group.public_sg.id]
-#   iam_instance_profile        = aws_iam_instance_profile.myan23_profile.name
-
-#   tags = {
-#     Name = "${var.project_name}"
-#   }
-#   user_data = filebase64("${path.module}/user_data.sh")
-# }
-
 resource "aws_launch_template" "web_template" {
   description            = "EC2 template for ASG"
   image_id               = var.instance_image
