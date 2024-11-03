@@ -112,7 +112,7 @@ Ensure the following tools are installed on your machine:
   - Access `http://10.10.10.10:8000` for traffic monitoring.
     
 10. **Cleanup**
-  - To remove the infrastructure created by Terraform, run:
+  - To remove the infrasturcture resources, run:
     ```bash
     terraform destroy
     ```
