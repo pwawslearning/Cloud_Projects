@@ -1,5 +1,6 @@
 Cloud projects
 
+![Screenshot from 2024-10-27 00-57-52](https://github.com/user-attachments/assets/d9ff2cfb-1e85-4c9d-a51f-745f0643e83c)
 
 ![haproxy](https://github.com/user-attachments/assets/6e5e33bc-feb2-4bba-9936-1bf67c760533)
 
