@@ -1,4 +1,6 @@
-Cloud projects
+## Cloud projects
+# Hosting a static website on Amazon S3 by using terraform
+![s3 drawio](https://github.com/user-attachments/assets/1048ab8d-9cca-459f-9f62-9c86a3769ff1)
 
 ![Screenshot from 2024-10-27 00-57-52](https://github.com/user-attachments/assets/d9ff2cfb-1e85-4c9d-a51f-745f0643e83c)
 
