@@ -9,7 +9,7 @@ This project demonstrates a streamlined deployment process of a web server in a 
 ## 📋 Table of Contents
 1. [Prerequisites](#prerequisites)
 2. [Architecture](#architecture)
-3. [Implementation](#implementaion)
+3. [Implementation](#implementation)
 4. [Verification](#verification)
 5. [Reference](#reference)
 
@@ -33,12 +33,25 @@ Before getting started, ensure you have the following:
 - **Serverless**: For deployment container on compute instance which two instance types are EC2 and Fargate(serverless). In this process, use serverless instance(Fargate).
 
 ## Implementation
-- **Create secret manager**:
+- **Create secret manager**
+  - Create secret to connect with Docker by using dynamically token rotating.
 - **IAM policy to user**:
-- **ECR pull-through-cache feature**:
+  - Attach policy *AmazonEC2ContainerRegistryFullAccess* to user who can pull images from docker hub to ECR registry.
+- **ECR pull-through-cache feature**
+  - Create an ECR repository with a pull-through cache rule, adding a new rule for specifying Docker Hub as the upstream.
+  - Configure ECR permissions to allow ECS access for pulling images.
 - **Pull image from upstream registry**:
+  - Pull image from docker hub by aws cli as ECR provided pull commands.
 - **Deploy web service on ECS**:
-
-## Verificatoin
-
+  - Create ECS cluster and defined instance type
+  - Create task definition and configure container specifications.
+  - Add ECS service under ECS cluster.
+## Verification
+- Go to task under ECS cluster >> public ip
+- Access public ip on your web browser
+  
+## Clean up
+- Destroy your created aws resources to save money.
 ## Reference
+
+https://pw-projects.notion.site/Deploy-a-sample-web-server-on-ECS-by-using-ECR-pullthroughcache-135cafef53ea808faf5bf47bbf883b23?pvs=4
