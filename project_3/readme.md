@@ -4,6 +4,7 @@
 
 This repository contains Terraform code to deploy and configure HAProxy with SSL termination to load balance traffic across multiple Docker containers. HAProxy will handle SSL termination and distribute traffic to backend services running in Docker containers.
 
+
 ## 📋 Table of Contents
 1. [Prerequisites](#prerequisites)
 2. [Features](#features)
@@ -120,5 +121,7 @@ Ensure the following tools are installed on your machine:
 ## Reference <a name="reference"></a>
 
 https://pw-projects.notion.site/Assignment-3-4-5-Deploy-HAproxy-for-multiple-docker-containers-by-using-Terraform-11bcafef53ea80f482dcd3067db64387?pvs=4
+
+https://www.haproxy.com/blog/how-to-run-haproxy-with-docker
 
 ---
