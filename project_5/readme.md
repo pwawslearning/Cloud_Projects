@@ -49,6 +49,7 @@ Before getting started, ensure you have the following:
 ## Verification
 - Go to task under ECS cluster >> public ip
 - Access public ip on your web browser
+  ![2024-11-06_17-44](https://github.com/user-attachments/assets/d341779e-2773-4603-86b3-06ac84b3775b)
   
 ## Clean up
 - Destroy your created aws resources to save money.
