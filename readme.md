@@ -32,3 +32,7 @@ resources efficiently.
 ![ecr_ecs drawio](https://github.com/user-attachments/assets/35014504-ecbc-42e5-8c80-99c43e76d781)
 - This project deploys a sample web server using Amazon ECS (Elastic Container Service) with an ECR (Elastic Container Registry) pull-through cache, using Docker Hub as the upstream registry. The primary purpose is to showcase how using a pull-through cache can streamline container image retrieval, reduce Docker Hub rate limits, and improve deployment efficiency by caching images in AWS’s regional ECR.
 ---
+## Deploy AWS infrastructure resources by using terraform cloud VCS driven workflow
+
+![diagram](https://github.com/user-attachments/assets/56262507-2776-4647-b9a9-48516a7f9afd)
+---
