@@ -61,4 +61,5 @@ Before getting started, ensure you have the following:
 
 https://pw-projects.notion.site/Deploy-AWS-infrastructure-resources-by-using-Terraform-with-VCS-driven-workflow-136cafef53ea80b2b2dcdcab477a10bd?pvs=4
 
+https://github.com/pwawslearning/terraform-vcs-workflow-project.git
 ---
