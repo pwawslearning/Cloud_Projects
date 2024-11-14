@@ -41,6 +41,7 @@ Before getting started, ensure you have the following:
   - To store terraform codes.
 - **Create project and workspace**:
   - Define project name and workspace for specific project and define workflow in workspace.
+  - Manage terraform state files.
 - **Integrate between Terraform cloud and Version Control Provider**
   - Set up authentication with Github under Developer setting and generate Client ID and secrets.
 - **Set Variable for AWS access_key and secret_key**
