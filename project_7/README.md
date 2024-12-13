@@ -28,8 +28,8 @@ Before getting started, ensure you have the following:
 
 1. **Clone the repository**:
     ```bash
-    git clone https://gitlab.com/cicd3812942/eks-cluster-tf.git
-    cd project_4
+    git clone https://github.com/pwawslearning/Cloud_Projects.git
+    cd Cloud_Projects/project_7
     ```
 
 2. **Initialize Terraform Providers**:
