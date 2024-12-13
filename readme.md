@@ -35,6 +35,13 @@ resources efficiently.
 ## Project 6: Deploy AWS infrastructure resources by using terraform cloud VCS driven workflow
 
 ![diagram](https://github.com/user-attachments/assets/56262507-2776-4647-b9a9-48516a7f9afd)
+
 - This project deploys the AWS resources by using terraform with VCS driven workflow. It aims to understand about version control by using github and integrate between version control providers and terraform cloud in HCP (Hashicorp Cloud Platform).
 - It is very similar with CICD workflow, terraform codes version control in github and store terraform statefiles in terraform cloud.
 ---
+
+## Project 7: Deploy EKS cluster by using Terraform
+
+![eks-cluster](https://github.com/user-attachments/assets/0fa35f2e-4f40-44be-83ae-731ad999e6ff)
+
+- This demostration aims to understand terraform module and deployment kubernetes cluster on AWS cloud.
