@@ -74,6 +74,7 @@ Before getting started, ensure you have the following:
     kubectl get pod -A
     kubeclt get namespace
     ```
+   [To completed CICD process with ArgoCD](https://gitlab.com/cicd3812942/code-repo.git)
 
 8. **Cleanup**
   - To remove the created aws resources
