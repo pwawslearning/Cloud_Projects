@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "rg" {
   name     = "${var.project_name}-rg"
-  location = var.location
+  location = var.location[0]
 }
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.project_name}-vnet"

@@ -3,7 +3,7 @@ resource "azurerm_orchestrated_virtual_machine_scale_set" "vmss" {
   name                = "myVMSS"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
-  sku_name            = "Standard_D2s_v4"
+  sku_name            = var.sku_name[0]
   instances           = 3
 
   platform_fault_domain_count = 1
