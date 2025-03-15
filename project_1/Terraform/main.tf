@@ -1,9 +1,5 @@
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = var.bucket_name
-
-  tags = {
-    Name = var.bucket_name
-  }
+  bucket = test-bucket01
 }
 resource "aws_s3_bucket_ownership_controls" "object_ownership" {
   bucket = aws_s3_bucket.s3_bucket.id
