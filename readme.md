@@ -45,3 +45,9 @@ resources efficiently.
 ![eks-cluster](https://github.com/user-attachments/assets/0fa35f2e-4f40-44be-83ae-731ad999e6ff)
 
 - This demostration aims to understand terraform module and deployment kubernetes cluster on AWS cloud.
+
+## Project 8 : Build Production-Grade Azure Infrasturcture with Terraform
+
+![Image](https://github.com/user-attachments/assets/a4875083-fe87-482f-8826-2f929694805a)
+
+- This project aims to deploy web server in Azure cloud by using Terraform and foucs on High Availibility, Scalablity and Security.
