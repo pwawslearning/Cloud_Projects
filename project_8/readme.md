@@ -60,4 +60,4 @@ I will create a scalable web application infrastructure in Azure using Terraform
 ![Image](https://github.com/user-attachments/assets/dda1cc24-d1d3-463a-bf00-c5f7affba044)
 
 ### Testing
-![Image](https://github.com/user-attachments/assets/770f2e7d-1747-43e2-84a9-126536bb77e2)
+![Image](https://github.com/user-attachments/assets/f967c339-5eb6-4b3b-86f7-ec2168f3e476)
