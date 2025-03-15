@@ -1,5 +1,6 @@
 # Advanced Azure Infrastructure with Terraform
 
+![Image](https://github.com/user-attachments/assets/a4875083-fe87-482f-8826-2f929694805a)
 
 ## Project Overview
 I will create a scalable web application infrastructure in Azure using Terraform. The infrastructure will include a Virtual Machine Scale Set (VMSS) behind a load balancer with proper security and scaling configurations.
@@ -54,3 +55,9 @@ I will create a scalable web application infrastructure in Azure using Terraform
 1. Use dynamic blocks for:
    - NSG rules
    - Load balancer rules
+
+### Resoruces
+
+
+### Testing
+![Image](https://github.com/user-attachments/assets/770f2e7d-1747-43e2-84a9-126536bb77e2)
