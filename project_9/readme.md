@@ -1,5 +1,5 @@
 
-# Build peer connection between two VPCs by using Terraform
+# Build peering connection between two VPCs by using Terraform
 
 ![Image](https://github.com/user-attachments/assets/47b5dee8-5a9b-400e-884b-c2a9b4a40158)
 
