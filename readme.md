@@ -56,4 +56,4 @@ resources efficiently.
 
 ![Image](https://github.com/user-attachments/assets/47b5dee8-5a9b-400e-884b-c2a9b4a40158)
 
-- VPC Peering enables secure, low-latency communication between VPCs without requiring VPNs or internet-based routing. Terraform simplifies the setup by automating resource provisioning and configuration.
+- VPC Peering allows direct network communication between two VPCs in AWS. This demostration aims to set up VPC Peering between two VPCs in different AWS regions by using Terraform configuration.
