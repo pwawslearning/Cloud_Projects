@@ -121,5 +121,6 @@ terraform apply -auto-approve
 
 ## Cleanup
 - To destroy all resources, run:
-```terraform destroy -auto-approve
+```
+terraform destroy -auto-approve
 ```
