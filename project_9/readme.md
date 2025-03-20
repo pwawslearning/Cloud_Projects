@@ -100,13 +100,16 @@ resource "aws_route" "route2" {
 ```
 ## Deployment steps
 1. Initialize Terraform
-```terraform init
+```
+terraform init
 ```
 2. Check Terraform Plan
-```terraform plan
+```
+terraform plan
 ```
 3. Apply the Terraform Configuration
-```terraform apply -auto-approve
+```
+terraform apply -auto-approve
 ```
 4. Verify the Peering Connection in AWS Console
 
