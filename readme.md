@@ -51,3 +51,9 @@ resources efficiently.
 ![Image](https://github.com/user-attachments/assets/a4875083-fe87-482f-8826-2f929694805a)
 
 - This project aims to deploy web server in Azure cloud by using Terraform and foucs on High Availibility, Scalablity and Security.
+
+## Project 9 : Build peering connection between two VPCs by using Terraform
+
+![Image](https://github.com/user-attachments/assets/47b5dee8-5a9b-400e-884b-c2a9b4a40158)
+
+- VPC Peering enables secure, low-latency communication between VPCs without requiring VPNs or internet-based routing. Terraform simplifies the setup by automating resource provisioning and configuration.
