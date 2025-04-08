@@ -76,7 +76,7 @@ resource "aws_lb_listener" "lb_listener" {
 
 ## 🧪 Testing
 
-![Image](https://github.com/user-attachments/assets/ac1f6b2b-79bb-478e-8469-69efffb4e950)
+![Image](https://github.com/user-attachments/assets/60c91f24-5024-4fd7-a6af-5c36d7a7d943)
 
 ---
 
