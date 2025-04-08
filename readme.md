@@ -59,9 +59,17 @@ resources efficiently.
 - VPC Peering allows direct network communication between two VPCs in AWS. This demostration aims to set up VPC Peering between two VPCs in different AWS regions by using Terraform configuration.
 
 ---
-# Blue-Green deployment with EC2 in AWS
+# Project 11 : Blue-Green deployment with EC2 in AWS
 ![Image](https://github.com/user-attachments/assets/12654106-a4bb-43e4-aebf-8d86553d9506)
 
 This project demonstrates a Blue-Green deployment strategy using Amazon EC2 instances behind an Application Load Balancer (ALB). The goal is to reduce downtime and risk by running two identical environments (Blue and Green) and switching traffic between them seamlessly.
+
+---
+
+# Project 12 : VPC Flow Logs with CloudWatch in AWS
+
+![Image](https://github.com/user-attachments/assets/be865a90-4b21-4a81-8a11-9486b2e40f5c)
+
+This lab sets up **VPC Flow Logs** to capture information about the IP traffic going to and from network interfaces in your VPC, and sends those logs to **Amazon CloudWatch Logs** for storage, analysis, and alerting.
 
 ---
