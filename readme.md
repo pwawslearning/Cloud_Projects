@@ -57,3 +57,11 @@ resources efficiently.
 ![Image](https://github.com/user-attachments/assets/47b5dee8-5a9b-400e-884b-c2a9b4a40158)
 
 - VPC Peering allows direct network communication between two VPCs in AWS. This demostration aims to set up VPC Peering between two VPCs in different AWS regions by using Terraform configuration.
+
+---
+# Blue-Green deployment with EC2 in AWS
+![Image](https://github.com/user-attachments/assets/12654106-a4bb-43e4-aebf-8d86553d9506)
+
+This project demonstrates a Blue-Green deployment strategy using Amazon EC2 instances behind an Application Load Balancer (ALB). The goal is to reduce downtime and risk by running two identical environments (Blue and Green) and switching traffic between them seamlessly.
+
+---
