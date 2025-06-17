@@ -12,11 +12,3 @@ variable "bucket_name" {
 variable "status" {
   type = string
 }
-
-variable "source_homepage" {
-  type = string
-}
-
-variable "source_errorpage" {
-  type = string
-}

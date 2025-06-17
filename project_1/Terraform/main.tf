@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = test-bucket01
+  bucket = var.bucket_name
 }
 resource "aws_s3_bucket_ownership_controls" "object_ownership" {
   bucket = aws_s3_bucket.s3_bucket.id
@@ -28,14 +28,14 @@ resource "aws_s3_bucket_versioning" "versioning" {
 resource "aws_s3_object" "home-page" {
   bucket       = aws_s3_bucket.s3_bucket.bucket
   key          = "index.html"
-  source       = var.source_homepage
+  source = "${path.module}/html files/index.html"
   content_type = "text/html"
 }
 
 resource "aws_s3_object" "error-page" {
   bucket       = aws_s3_bucket.s3_bucket.bucket
   key          = "error.html"
-  source       = var.source_errorpage
+  source       = "${path.module}/html files/error.html"
   content_type = "text/html"
 }
 
@@ -60,11 +60,6 @@ resource "aws_s3_bucket_website_configuration" "redirect-page" {
   }
 }
 
-resource "aws_s3_bucket_policy" "allow_access_from_public" {
-  bucket = aws_s3_bucket.s3_bucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_public.json
-}
-
 data "aws_iam_policy_document" "allow_access_from_public" {
   statement {
     principals {
@@ -80,4 +75,8 @@ data "aws_iam_policy_document" "allow_access_from_public" {
       "${aws_s3_bucket.s3_bucket.arn}/*",
     ]
   }
+}
+resource "aws_s3_bucket_policy" "allow_access_from_public" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  policy = data.aws_iam_policy_document.allow_access_from_public.json
 }
