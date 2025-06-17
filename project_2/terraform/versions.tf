@@ -1,8 +1,8 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "5.67.0"
+      source = "hashicorp/aws"
+      version = "6.0.0-beta3"
     }
   }
 }
@@ -12,11 +12,15 @@ provider "aws" {
   profile = var.profile
 }
 
-# To store statefile in s3
-terraform {
-  backend "s3" {
-    bucket = "apache-websvr-bk"
-    key    = "terraform.tfstate"
-    region = "ap-southeast-1"
-  }
-}
+
+# resource "aws_s3_bucket" "to_storestatefile" {
+#   bucket = "to-storetfstatefile-1706"
+# }
+# # To store statefile in s3
+# terraform {
+#   backend "s3" {
+#     bucket = "to-storetfstatefile-1706"
+#     key    = "terraform.tfstate"
+#     region = "ap-southeast-1"
+#   }
+# }

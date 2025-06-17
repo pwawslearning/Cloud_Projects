@@ -1,38 +1,12 @@
-profile = ""
-
-project-name = ""
-
-vpc-cidr = ""
-
-public_subnet1 = ""
-
-public_subnet2 = ""
-
-private_subnet1 = ""
-
-private_subnet2 = ""
-
-public_sub1a_name = ""
-
-public_sub2b_name = ""
-
-private_subnet1_name = ""
-
-private_subnet2_name = ""
-
-image_id = ""
-
-instance_type = ""
-
-desired_capacity = ""
-max_size         = ""
-min_size         = ""
-
-path        = ""
-bucket_name = ""
-status      = ""
-source_path = ""
-image_path = ""
-role_name   = ""
-policy_arn1 = ""
-policy_arn2 = ""
+profile = "test-cli"
+project-name = "project-2-17062025"
+vpc-cidr = "10.0.0.0/16"
+public_subnet1 = "10.0.0.0/24"
+public_subnet2 = "10.0.1.0/24"
+private_subnet1 = "10.0.2.0/24"
+private_subnet2 = "10.0.3.0/24"
+image_id = "ami-02c7683e4ca3ebf58"
+instance_type = "t2.micro"
+desired_capacity = 2
+max_size         = 3
+min_size         = 1

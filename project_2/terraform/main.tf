@@ -14,9 +14,8 @@ resource "aws_subnet" "public_subnet1" {
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = true
 
-
   tags = {
-    Name = "${var.public_sub1a_name}"
+    Name = "${var.project-name}-public_subnet1"
   }
 }
 
@@ -27,9 +26,8 @@ resource "aws_subnet" "public_subnet2" {
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = true
 
-
   tags = {
-    Name = "${var.public_sub2b_name}"
+    Name = "${var.project-name}-public_subnet2"
   }
 }
 
@@ -41,12 +39,10 @@ resource "aws_subnet" "private_subnet1" {
   availability_zone       = "ap-southeast-1a"
   map_public_ip_on_launch = false
 
-
   tags = {
-    Name = "${var.private_subnet1_name}"
+    Name = "${var.project-name}-private_subnet1"
   }
 }
-
 
 resource "aws_subnet" "private_subnet2" {
   vpc_id                  = aws_vpc.vpc.id
@@ -54,9 +50,8 @@ resource "aws_subnet" "private_subnet2" {
   availability_zone       = "ap-southeast-1b"
   map_public_ip_on_launch = false
 
-
   tags = {
-    Name = "${var.private_subnet2_name}"
+    Name = "${var.project-name}-private_subnet2"
   }
 }
 
@@ -68,7 +63,6 @@ resource "aws_internet_gateway" "my_igw" {
     Name = "my-vpc-igw"
   }
 }
-
 
 #create public route table
 resource "aws_route_table" "public_rtb" {
@@ -102,7 +96,6 @@ resource "aws_eip" "eip_nat2" {
   domain = "vpc"
 }
 
-
 resource "aws_nat_gateway" "nat_gw1" {
   allocation_id = aws_eip.eip_nat1.id
   subnet_id     = aws_subnet.public_subnet1.id
@@ -120,7 +113,6 @@ resource "aws_nat_gateway" "nat_gw2" {
     Name = "nat-gateway2"
   }
 }
-
 
 resource "aws_route_table" "private_rtb1" {
   vpc_id = aws_vpc.vpc.id
@@ -195,6 +187,7 @@ resource "aws_security_group" "web_svr_sg" {
   }
   
   ingress {
+    description = "allow HTTP via ALB"
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
@@ -211,10 +204,10 @@ resource "aws_security_group" "web_svr_sg" {
 }
 #Create S3 bucket and endpoint gateway
 resource "aws_s3_bucket" "s3_bucket" {
-  bucket = var.bucket_name
+  bucket = "${var.project-name}-bucket02"
 
   tags = {
-    Name = var.bucket_name
+    Name = "${var.project-name}-bucket02"
   }
 }
 resource "aws_s3_bucket_ownership_controls" "object_ownership" {
@@ -235,23 +228,23 @@ resource "aws_s3_bucket_public_access_block" "bucket_access" {
 resource "aws_s3_bucket_versioning" "versioning" {
   bucket = aws_s3_bucket.s3_bucket.id
   versioning_configuration {
-    status = var.status
+    status = "Enabled"
   }
 }
 resource "aws_s3_object" "object" {
   bucket = aws_s3_bucket.s3_bucket.bucket
   key    = "index.html"
-  source = var.source_path
+  source = "${path.module}/../html/index.html"
 }
 resource "aws_s3_object" "object_image" {
   bucket = aws_s3_bucket.s3_bucket.bucket
   key    = "Apache.png"
-  source = var.image_path
+  source = "${path.module}/../html/Apache.png"
 }
 
 # Creating s3-role
 resource "aws_iam_role" "s3role" {
-  name = var.role_name
+  name = "${var.project-name}-role"
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
@@ -266,15 +259,15 @@ resource "aws_iam_role" "s3role" {
       ]
   })
 }
-# attach policy to role
+# attach s3 access policy to role
 resource "aws_iam_role_policy_attachment" "s3role_policy_attachment" {
   role       = aws_iam_role.s3role.name
-  policy_arn = var.policy_arn1
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
-# attach policy to role
+# attach SSM policy to role
 resource "aws_iam_role_policy_attachment" "s3role_policy2_attachment" {
   role       = aws_iam_role.s3role.name
-  policy_arn = var.policy_arn2
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMFullAccess"
 }
 
 #Create instance profile
@@ -335,7 +328,7 @@ resource "aws_launch_template" "svr_template" {
   image_id               = var.image_id
   instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.web_svr_sg.id]
-  user_data              = filebase64("${var.path}config.sh")
+  user_data              = filebase64("${path.module}/../html/config.sh")
   iam_instance_profile {
     name = aws_iam_instance_profile.instance_profile.name
   }

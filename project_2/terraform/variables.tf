@@ -1,6 +1,8 @@
 variable "profile" {
   type = string
+}
 
+variable "project-name" {
 }
 
 variable "vpc-cidr" {
@@ -8,76 +10,30 @@ variable "vpc-cidr" {
 }
 
 variable "public_subnet1" {
-
-}
-
-variable "project-name" {
-
 }
 
 variable "public_subnet2" {
-
 }
 
 variable "private_subnet1" {
-
 }
 
 variable "private_subnet2" {
-
 }
 
-variable "public_sub1a_name" {
-
-}
-
-variable "public_sub2b_name" {
-
-}
-variable "private_subnet1_name" {
-
-}
-variable "private_subnet2_name" {
-}
-variable "vpc_id" {
-
-}
 variable "image_id" {
-
 }
+
 variable "instance_type" {
-
 }
-variable "path" {
 
-}
 variable "desired_capacity" {
-
+  type = number
 }
-variable "max_size" {
 
+variable "max_size" {
+  type = number
 }
 variable "min_size" {
-
-}
-variable "bucket_name" {
-
-}
-variable "status" {
-
-}
-variable "source_path" {
-
-}
-variable "image_path" {
-  
-}
-variable "role_name" {
-
-}
-variable "policy_arn1" {
-
-}
-variable "policy_arn2" {
-
+  type = number
 }
