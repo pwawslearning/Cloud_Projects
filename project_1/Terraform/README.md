@@ -10,8 +10,4 @@ bucket_name = ""
 
 status = ""
 
-source_errorpage = ""
-
-source_homepage = ""
-
 ```
